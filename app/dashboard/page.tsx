@@ -87,20 +87,22 @@ export default function Dashboard() {
           "postgres_changes",
           { event: "*", schema: "public", table: "bookmarks" },
           (payload) => {
+            console.log("Realtime event received:", payload);
+
             if (payload.eventType === "INSERT") {
               const newBookmark = payload.new as Bookmark;
-              if (newBookmark.user_id !== user.id) return; // ✅ security guard
+              if (newBookmark.user_id !== user.id) return;
               setBookmarks((prev) => {
                 if (prev.some((b) => b.id === newBookmark.id)) return prev;
                 return [newBookmark, ...prev];
               });
             } else if (payload.eventType === "DELETE") {
               const deleted = payload.old as Bookmark;
-              if (deleted.user_id && deleted.user_id !== user.id) return; // ✅ security guard
+              if (deleted.user_id && deleted.user_id !== user.id) return;
               setBookmarks((prev) => prev.filter((b) => b.id !== deleted.id));
             } else if (payload.eventType === "UPDATE") {
               const updated = payload.new as Bookmark;
-              if (updated.user_id !== user.id) return; // ✅ security guard
+              if (updated.user_id !== user.id) return;
               setBookmarks((prev) =>
                 prev.map((b) => (b.id === updated.id ? updated : b))
               );
@@ -109,6 +111,12 @@ export default function Dashboard() {
         )
         .subscribe((status) => {
           console.log("Realtime status:", status);
+
+          // ✅ Key fix: re-fetch whenever we (re)connect so we never miss events
+          // that happened during CLOSED/CHANNEL_ERROR period
+          if (status === "SUBSCRIBED") {
+            fetchBookmarks(user.id);
+          }
         });
     };
 
@@ -347,7 +355,6 @@ export default function Dashboard() {
                 key={b.id}
                 className="flex flex-col justify-between p-5 bg-[#1a1a1a] rounded-2xl border border-gray-800 hover:border-violet-700 transition-all duration-200 group relative"
               >
-                {/* Delete button */}
                 <button
                   onClick={() => handleDelete(b.id)}
                   className="absolute top-3 right-3 text-gray-600 hover:text-red-400 transition-colors duration-200 opacity-0 group-hover:opacity-100 cursor-pointer"
@@ -358,7 +365,6 @@ export default function Dashboard() {
                   </svg>
                 </button>
 
-                {/* Favicon + domain */}
                 <div className="flex items-center gap-2 mb-3">
                   {getFavicon(b.url) && (
                     <img
@@ -373,7 +379,6 @@ export default function Dashboard() {
                   </span>
                 </div>
 
-                {/* Title */}
                 <a
                   href={b.url}
                   target="_blank"
@@ -383,7 +388,6 @@ export default function Dashboard() {
                   {b.title}
                 </a>
 
-                {/* Open link */}
                 <a
                   href={b.url}
                   target="_blank"

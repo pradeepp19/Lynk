@@ -13,19 +13,19 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#121212] text-violet-600 ">
-      <nav className="flex justify-between items-center py-6 px-6 md:px-12">
+    <div className="min-h-screen bg-[#121212] text-violet-400 ">
+      <nav className="flex justify-between items-center py-6 px-6 md:px-12  text-violet-400">
         <h1 className="text-2xl font-bold cursor-pointer">Lynk</h1>
         <button
           onClick={handleLogin}
-          className="bg-[#121212] font-bold text-white-400 hover:border-transparent hover:bg-purple-600 hover:text-white active:bg-purple-700 px-4 py-2 cursor-pointer rounded-lg hover:opacity-80 transition-colors duration-300 "
+          className="bg-[#121212] font-bold text-white-400 hover:border-transparent hover:bg-violet-600 hover:text-white active:bg-purple-700 px-4 py-2 cursor-pointer rounded-lg hover:opacity-80 transition-colors duration-300 "
         >
           Login
         </button>
       </nav>
 
       {/* HERO */}
-      <section className="flex flex-col items-center text-center px-6 py-20 max-w-4xl mx-auto">
+      <section className="flex flex-col items-center text-center  text-violet-600 px-6 py-20 max-w-4xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
           Organize Your Bookmarks.
           <br />

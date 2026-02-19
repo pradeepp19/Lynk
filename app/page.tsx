@@ -44,7 +44,7 @@ export default function Home() {
   <button
   onClick={handleLogin}
   aria-label="Sign in with Google"
-  className=" hover:bg-gray-700 utline-offset-2 outline-white-400 shadow-indigo-500/50 cursor-pointer focus:outline flex items-center gap-3 bg-google-button-blue rounded-full p-0.5 pr-4 transition-colors duration-300 hover:bg-google-button-blue-hover"
+  className="cursor-pointer focus:outline outline-offset-2 outline-violet-400 shadow-violet-500/30 shadow-md flex items-center gap-3 bg-violet-600 hover:bg-violet-700 active:bg-violet-800 rounded-full p-0.5 pr-4 transition-colors duration-300"
 >
   <div className="flex items-center justify-center bg-white w-9 h-9 rounded-full">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5">
@@ -106,8 +106,7 @@ export default function Home() {
               ⚡ Real-time Sync
             </h3>
             <p className="text-gray-200">
-              Open two tabs and see changes instantly.
-              No page refresh required.
+              Your bookmarks update everywhere the moment you make a change.
             </p>
           </div>
 
@@ -116,8 +115,7 @@ export default function Home() {
               📂 Smart Organization
             </h3>
             <p className="text-gray-200">
-              Group bookmarks by topic and mark them as done
-              once completed.
+              Store and manage your bookmarks in one clean, distraction-free space.
             </p>
           </div>
 

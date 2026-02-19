@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lynk - Smart Bookmark Manager
 
-## Getting Started
+A private, real-time bookmark manager built with Next.js and Supabase.
 
-First, run the development server:
+LYNK - https://lynk-pearl.vercel.app/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
+- Google OAuth authentication (no email/password)
+- Private bookmarks per user (Row Level Security)
+- Real-time sync across tabs without page refresh
+- List and Card view toggle
+- Deployed on Vercel
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
+- Next.js 14 (App Router)
+- Supabase (Auth, Database, Realtime)
+- Tailwind CSS
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Problems Faced & Solutions
 
-## Learn More
+### 1. Realtime not syncing across tabs
+The WebSocket connection kept showing TIMED_OUT and CHANNEL_ERROR on localhost. 
+Solution: Used `supabase.realtime.setAuth(session.access_token)` to explicitly 
+authenticate the WebSocket connection, and added a re-fetch on every SUBSCRIBED 
+event to catch any missed updates during reconnection.
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Cross-user data leaking via Realtime
+Realtime events were broadcasting all users' bookmarks to all tabs.
+Solution: Added client-side `user_id` guards on every INSERT/UPDATE/DELETE 
+event handler, plus Supabase Row Level Security policies on the database.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Google OAuth redirecting to localhost after deployment
+After deploying to Vercel, Google login redirected back to localhost.
+Solution: Updated Supabase Auth URL Configuration with the Vercel production URL.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
